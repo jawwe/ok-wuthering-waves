@@ -7,8 +7,10 @@ from ok.util.GlobalConfig import create_basic_options
 from src.game_launcher import get_game_launch_arguments
 from src.task.process_feature import process_feature
 from src.task.task_icons import task_icon
+from src.app_identity import APP_NAME, CONFIG_ROOT, DATA_ROOT, SOURCE_URL, REPOSITORY_URL, CHANNEL_BRANCH, distribution_version
+from src.input_mode import SwitchableInteraction
 
-version = "dev"
+version = distribution_version()
 
 
 def _find_most_recently_run_pc_exe():
@@ -175,10 +177,14 @@ config = {
         'group:Echo Management': {'light': '#8C651A', 'dark': '#E8C27C'},
         'group:Multi-account': {'light': '#7650A5', 'dark': '#C2A3EA'},
     },
-    'config_folder': 'configs',
+    'config_folder': str(CONFIG_ROOT),
     'blur_area': blur_area,
-    'gui_icon': 'icons/icon.png',
+    'gui_icon': 'icons/asterdesk.png',
     'global_configs': [basic_config_option, key_config_option, char_config_option, monthly_card_config_option],
+    'custom_tabs': [
+        ["src.gui.CharacterCodeTab", "CharacterCodeTab"],
+        ["src.gui.ClientSettingsTab", "ClientSettingsTab"],
+    ],
     'ocr': {
         'lib': 'onnxocr',
         'auto_simplify': True,
@@ -217,7 +223,7 @@ config = {
         'launch_arguments': get_game_launch_arguments,
         'exe': 'Client-Win64-Shipping.exe',
         'hwnd_class': 'UnrealWindow',
-        'interaction': 'PostMessage',
+        'interaction': SwitchableInteraction,
         'capture_method': ['WGC', 'WGC_HDR','BitBlt_RenderFull'],  # Windows版本支持的话, 优先使用WGC, 否则使用BitBlt_Full
         'check_hdr': False,
         'force_no_hdr': False,
@@ -238,14 +244,12 @@ config = {
     },
     'links': {
         'default': {
-            'github': 'https://github.com/ok-oldking/ok-wuthering-waves',
-            'discord': 'https://discord.gg/vVyCatEBgA',
-            'faq': 'https://ok-script.com/ok-ww/'
+            'github': SOURCE_URL,
+            'faq': REPOSITORY_URL + '/blob/' + CHANNEL_BRANCH + '/docs/independent-client.md',
         },
         'zh_CN': {
-            'github': 'https://github.com/ok-oldking/ok-wuthering-waves',
-            'discord': 'https://discord.gg/vVyCatEBgA',
-            'faq': 'https://ok-script.com/ok-ww',
+            'github': SOURCE_URL,
+            'faq': REPOSITORY_URL + '/blob/' + CHANNEL_BRANCH + '/docs/independent-client.md',
         },
     },
     'about': """
@@ -259,14 +263,14 @@ config = {
         <strong>使用本软件可能会导致账号被封。</strong> 请在了解风险后再使用。
     </p>
 """,
-    'screenshots_folder': "screenshots",
-    'gui_title': 'OK-WW',  # Optional
-    'game_name': 'Wuthering Waves',
+    'screenshots_folder': str(DATA_ROOT / 'screenshots'),
+    'gui_title': APP_NAME,
+    'game_name': 'Desktop',
     # 'coco_feature_folder': get_path(__file__, 'assets/coco_feature'),  # required if using feature detection
-    'log_file': 'logs/ok-ww.log',  # Optional, auto rotating every day
-    'error_log_file': 'logs/ok-ww_error.log',
-    'launcher_log_file': 'logs/launcher.log',
-    'launcher_error_log_file': 'logs/launcher_error.log',
+    'log_file': str(DATA_ROOT / 'logs/client.log'),
+    'error_log_file': str(DATA_ROOT / 'logs/error.log'),
+    'launcher_log_file': str(DATA_ROOT / 'logs/launcher.log'),
+    'launcher_error_log_file': str(DATA_ROOT / 'logs/launcher-error.log'),
     'version': version,
     'onetime_tasks': [  # tasks to execute
         ["src.task.DailyTask", "DailyTask"],
@@ -291,10 +295,5 @@ config = {
         ["src.task.FastTravelTask", "FastTravelTask"],
         ["src.task.MouseResetTask", "MouseResetTask"],
     ], 'scene': ["src.scene.WWScene", "WWScene"],
-    'update_pyappify': {
-        'to_version': '1.2.3',
-        'zip_url': 'https://github.com/ok-oldking/ok-wuthering-waves/releases/download/v3.5.30/ok-ww-win32.zip',
-        'sha256': '447207edbfb6944beb994347048e155df99775eb18c87dcae54dda125071c94a',
-    }
 
 }

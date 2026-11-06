@@ -12,7 +12,7 @@ class MouseResetTask(TriggerTask):
         super().__init__(*args, **kwargs)
         self.default_config = {'_enabled': True}
         self.trigger_interval = 10
-        self.name = "🖱️ Prevent Wuthering Waves from moving the mouse"
+        self.name = "Prevent the target window from moving the mouse"
         self.icon = task_icon('settings')
         self.description = "Turn on if you mouse jumps around"
         self.mouse_pos = None

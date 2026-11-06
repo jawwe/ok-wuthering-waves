@@ -2276,3 +2276,98 @@ msgstr "多帳號"
 #: src/task/TacetTask.py
 msgid "Daily Activities"
 msgstr "日常活動"
+
+# Independent client
+
+msgid "Client Settings"
+msgstr "用戶端設定"
+
+msgid "Switch all keyboard and mouse input"
+msgstr "一鍵切換全部鍵鼠輸入"
+
+msgid "System keyboard and mouse"
+msgstr "系統鍵鼠輸入"
+
+msgid "Background window messages"
+msgstr "背景視窗訊息"
+
+msgid "Current input mode: {mode}"
+msgstr "目前輸入方式：{mode}"
+
+msgid "System input uses the real keyboard and cursor. Keep the game focused. Changes apply between tasks."
+msgstr "系統輸入會使用真實鍵盤與滑鼠，請保持遊戲位於前景。僅在任務閒置時切換。"
+
+msgid "Check independent channel"
+msgstr "檢查獨立通道更新"
+
+msgid "Download portable update"
+msgstr "下載新版可攜包"
+
+msgid "Open update folder"
+msgstr "開啟更新目錄"
+
+msgid "Import old configuration"
+msgstr "匯入舊設定"
+
+msgid "Choose old configuration folder"
+msgstr "選擇舊設定目錄"
+
+msgid "Import old configuration once. The current configuration is backed up and replaced on the next start."
+msgstr "可一次性匯入舊設定。下次啟動時會備份並取代目前設定。"
+
+msgid "The current configuration will be backed up and replaced after restart. Continue?"
+msgstr "重新啟動後將備份並取代目前設定，是否繼續？"
+
+msgid "Staged {count} files. Restart to finish importing."
+msgstr "已暫存 {count} 個檔案，重新啟動後完成匯入。"
+
+msgid "Stop the current task before importing configuration."
+msgstr "請先停止目前任務，再匯入設定。"
+
+msgid "Stop the current task before switching input mode."
+msgstr "請先停止目前任務，再切換輸入方式。"
+
+msgid "No newer independent release available."
+msgstr "暫無更新的獨立版本。"
+
+msgid "Available version: {version}"
+msgstr "可用版本：{version}"
+
+msgid "Update check failed: {error}"
+msgstr "更新檢查失敗：{error}"
+
+msgid "Update saved to {path}. Close the app and extract it over this portable folder; keep the data folder."
+msgstr "更新已儲存至 {path}。請關閉程式後解壓縮覆蓋可攜目錄，並保留 data 目錄。"
+
+msgid "Loading workshop cache..."
+msgstr "正在讀取工坊快取…"
+
+msgid "Refresh workshop cache"
+msgstr "重新整理工坊快取"
+
+msgid "Refreshing workshop index and code cache..."
+msgstr "正在更新工坊索引與全部程式碼快取…"
+
+msgid "Offline cache from {time}"
+msgstr "離線快取，更新時間：{time}"
+
+msgid "Workshop updated at {time}"
+msgstr "工坊更新時間：{time}"
+
+msgid "{count} archives could not be cached."
+msgstr "有 {count} 個程式碼包未能快取。"
+
+msgid "Workshop unavailable; showing saved data."
+msgstr "工坊暫時無法連線，正在顯示已儲存的資料。"
+
+msgid "Focus the game before enabling system input."
+msgstr "請將遊戲置於前景後啟用系統輸入。"
+
+msgid "Connect the Windows target before switching input mode."
+msgstr "請先連線目標視窗，再切換輸入方式。"
+
+msgid "Release all inputs before switching input mode."
+msgstr "請放開全部按鍵與滑鼠按鈕，再切換輸入方式。"
+
+msgid "Prevent the target window from moving the mouse"
+msgstr "防止目標視窗移動滑鼠"

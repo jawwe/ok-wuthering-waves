@@ -2198,3 +2198,98 @@ msgstr "多账号"
 #: src/task/TacetTask.py
 msgid "Daily Activities"
 msgstr "日常活动"
+
+# Independent client
+
+msgid "Client Settings"
+msgstr "客户端设置"
+
+msgid "Switch all keyboard and mouse input"
+msgstr "一键切换全部键鼠输入"
+
+msgid "System keyboard and mouse"
+msgstr "系统键鼠输入"
+
+msgid "Background window messages"
+msgstr "后台窗口消息"
+
+msgid "Current input mode: {mode}"
+msgstr "当前输入方式：{mode}"
+
+msgid "System input uses the real keyboard and cursor. Keep the game focused. Changes apply between tasks."
+msgstr "系统输入会使用真实键盘和鼠标，请保持游戏位于前台。仅在任务空闲时切换。"
+
+msgid "Check independent channel"
+msgstr "检查独立通道更新"
+
+msgid "Download portable update"
+msgstr "下载新版便携包"
+
+msgid "Open update folder"
+msgstr "打开更新目录"
+
+msgid "Import old configuration"
+msgstr "导入旧配置"
+
+msgid "Choose old configuration folder"
+msgstr "选择旧配置目录"
+
+msgid "Import old configuration once. The current configuration is backed up and replaced on the next start."
+msgstr "可一次性导入旧配置。下次启动时会备份并替换当前配置。"
+
+msgid "The current configuration will be backed up and replaced after restart. Continue?"
+msgstr "重启后将备份并替换当前配置，是否继续？"
+
+msgid "Staged {count} files. Restart to finish importing."
+msgstr "已暂存 {count} 个文件，重启后完成导入。"
+
+msgid "Stop the current task before importing configuration."
+msgstr "请先停止当前任务，再导入配置。"
+
+msgid "Stop the current task before switching input mode."
+msgstr "请先停止当前任务，再切换输入方式。"
+
+msgid "No newer independent release available."
+msgstr "暂无更新的独立版本。"
+
+msgid "Available version: {version}"
+msgstr "可用版本：{version}"
+
+msgid "Update check failed: {error}"
+msgstr "更新检查失败：{error}"
+
+msgid "Update saved to {path}. Close the app and extract it over this portable folder; keep the data folder."
+msgstr "更新已保存至 {path}。请关闭程序后解压覆盖便携目录，并保留 data 目录。"
+
+msgid "Loading workshop cache..."
+msgstr "正在读取工坊缓存…"
+
+msgid "Refresh workshop cache"
+msgstr "刷新工坊缓存"
+
+msgid "Refreshing workshop index and code cache..."
+msgstr "正在更新工坊索引和全部代码缓存…"
+
+msgid "Offline cache from {time}"
+msgstr "离线缓存，更新时间：{time}"
+
+msgid "Workshop updated at {time}"
+msgstr "工坊更新时间：{time}"
+
+msgid "{count} archives could not be cached."
+msgstr "有 {count} 个代码包未能缓存。"
+
+msgid "Workshop unavailable; showing saved data."
+msgstr "工坊暂不可达，正在显示已保存的数据。"
+
+msgid "Focus the game before enabling system input."
+msgstr "请将游戏置于前台后启用系统输入。"
+
+msgid "Connect the Windows target before switching input mode."
+msgstr "请先连接目标窗口，再切换输入方式。"
+
+msgid "Release all inputs before switching input mode."
+msgstr "请松开全部按键和鼠标按钮，再切换输入方式。"
+
+msgid "Prevent the target window from moving the mouse"
+msgstr "防止目标窗口移动鼠标"

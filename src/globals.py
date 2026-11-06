@@ -33,6 +33,24 @@ class Globals:
     def yolo_detect(self, image, threshold=0.6, label=-1):
         return self.yolo_model.detect(image, threshold=threshold, label=label)
 
+    def on_show_main_window(self, window):
+        """Use the framework's app hook to remove legacy distribution controls."""
+        from ok.ui.qt.about.AboutTab import ProjectCard
+        about = window.about_tab
+        for section in tuple(about.sections):
+            if section.widget is about.update_card or section.findChildren(ProjectCard):
+                about.vBoxLayout.removeWidget(section)
+                about.sections.remove(section)
+                section.hide()
+                section.deleteLater()
+        about.update_card = None
+        from PySide6.QtWidgets import QApplication
+        def release_inputs():
+            interaction = getattr(getattr(window, "executor", None), "interaction", None)
+            if interaction is not None:
+                interaction.on_destroy()
+        QApplication.instance().aboutToQuit.connect(release_inputs)
+
 
 if __name__ == "__main__":
     glbs = Globals(exit_event=None)

@@ -19,8 +19,10 @@ from src.char.CustomCharLoader import (
 )
 
 
-BASE_CHAR_URL = "https://raw.githubusercontent.com/ok-oldking/ok-wuthering-waves/refs/heads/master/src/char/BaseChar.py"
-CONTRIBUTE_CHAR_URL = "https://github.com/ok-oldking/ok-wuthering-waves/edit/master/src/char/{class_name}.py"
+from src.app_identity import CHANNEL_BRANCH, REPOSITORY
+
+BASE_CHAR_URL = f"https://raw.githubusercontent.com/{REPOSITORY}/{CHANNEL_BRANCH}/src/char/BaseChar.py"
+CONTRIBUTE_CHAR_URL = f"https://github.com/{REPOSITORY}/edit/{CHANNEL_BRANCH}/src/char/{{class_name}}.py"
 CHARACTER_DISPLAY_NAMES = {
     "Douling": "Buling",
     "Xigelika": "Sigrika",

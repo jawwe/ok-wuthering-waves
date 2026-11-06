@@ -1,6 +1,7 @@
 import win32api
 
 from ok import PostMessageInteraction
+from src.input_mode import uses_background_input
 from ok.task.exceptions import TaskDisabledException, WaitFailedException
 
 from src.task.BaseWWTask import LOGIN_TEXTS
@@ -41,7 +42,7 @@ class MultiAccountConfigTask(MultiAccountDailyTask):
         if (getattr(self, '_login_cursor_active', False)
                 and isinstance(x, (int, float)) and isinstance(y, (int, float))
                 and x >= 1 and y >= 1
-                and isinstance(self.executor.interaction, PostMessageInteraction)):
+                and uses_background_input(self.executor.interaction)):
             position = self.executor.interaction.capture.get_abs_cords(x, y)
             win32api.SetCursorPos((int(position[0]), int(position[1])))
             self.sleep(0.2)

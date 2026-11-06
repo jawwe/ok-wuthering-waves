@@ -2,6 +2,8 @@ import os
 
 os.environ["PYAPPIFY_PYTHON_TEST"] = "1"
 if __name__ == '__main__':
+    from src.bootstrap import prepare_environment
+    prepare_environment()
     from config import config
     from ok import OK
 

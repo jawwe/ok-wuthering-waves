@@ -2153,3 +2153,98 @@ msgstr "다중 계정"
 #: src/task/TacetTask.py
 msgid "Daily Activities"
 msgstr "일일 활동"
+
+# Independent client
+
+msgid "Client Settings"
+msgstr "클라이언트 설정"
+
+msgid "Switch all keyboard and mouse input"
+msgstr "모든 키보드 및 마우스 입력 전환"
+
+msgid "System keyboard and mouse"
+msgstr "시스템 키보드 및 마우스"
+
+msgid "Background window messages"
+msgstr "백그라운드 창 메시지"
+
+msgid "Current input mode: {mode}"
+msgstr "현재 입력 방식: {mode}"
+
+msgid "System input uses the real keyboard and cursor. Keep the game focused. Changes apply between tasks."
+msgstr "시스템 입력은 실제 키보드와 커서를 사용합니다. 게임 포커스를 유지하세요. 작업 사이에 전환됩니다."
+
+msgid "Check independent channel"
+msgstr "독립 채널 업데이트 확인"
+
+msgid "Download portable update"
+msgstr "포터블 업데이트 다운로드"
+
+msgid "Open update folder"
+msgstr "업데이트 폴더 열기"
+
+msgid "Import old configuration"
+msgstr "이전 설정 가져오기"
+
+msgid "Choose old configuration folder"
+msgstr "이전 설정 폴더 선택"
+
+msgid "Import old configuration once. The current configuration is backed up and replaced on the next start."
+msgstr "이전 설정을 한 번 가져올 수 있습니다. 다음 시작 시 현재 설정을 백업하고 교체합니다."
+
+msgid "The current configuration will be backed up and replaced after restart. Continue?"
+msgstr "다시 시작하면 현재 설정을 백업하고 교체합니다. 계속할까요?"
+
+msgid "Staged {count} files. Restart to finish importing."
+msgstr "파일 {count}개를 준비했습니다. 다시 시작해 완료하세요."
+
+msgid "Stop the current task before importing configuration."
+msgstr "설정을 가져오기 전에 현재 작업을 중지하세요."
+
+msgid "Stop the current task before switching input mode."
+msgstr "입력 방식을 바꾸기 전에 현재 작업을 중지하세요."
+
+msgid "No newer independent release available."
+msgstr "새 독립 릴리스가 없습니다."
+
+msgid "Available version: {version}"
+msgstr "사용 가능한 버전: {version}"
+
+msgid "Update check failed: {error}"
+msgstr "업데이트 확인 실패: {error}"
+
+msgid "Update saved to {path}. Close the app and extract it over this portable folder; keep the data folder."
+msgstr "업데이트를 {path}에 저장했습니다. 앱을 닫고 압축을 덮어 푸세요. data 폴더는 유지하세요."
+
+msgid "Loading workshop cache..."
+msgstr "워크숍 캐시 읽는 중…"
+
+msgid "Refresh workshop cache"
+msgstr "워크숍 캐시 새로 고침"
+
+msgid "Refreshing workshop index and code cache..."
+msgstr "워크숍 목록 및 코드 캐시 갱신 중…"
+
+msgid "Offline cache from {time}"
+msgstr "오프라인 캐시: {time}"
+
+msgid "Workshop updated at {time}"
+msgstr "워크숍 갱신 시간: {time}"
+
+msgid "{count} archives could not be cached."
+msgstr "패키지 {count}개를 캐시하지 못했습니다."
+
+msgid "Workshop unavailable; showing saved data."
+msgstr "워크숍에 연결할 수 없어 저장된 데이터를 표시합니다."
+
+msgid "Focus the game before enabling system input."
+msgstr "시스템 입력 전에 게임을 전면에 두세요."
+
+msgid "Connect the Windows target before switching input mode."
+msgstr "입력 방식을 바꾸기 전에 대상 창에 연결하세요."
+
+msgid "Release all inputs before switching input mode."
+msgstr "모든 키와 마우스 버튼을 놓은 후 전환하세요."
+
+msgid "Prevent the target window from moving the mouse"
+msgstr "대상 창의 마우스 이동 방지"

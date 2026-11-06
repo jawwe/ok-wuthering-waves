@@ -2150,3 +2150,98 @@ msgstr "複数アカウント"
 #: src/task/TacetTask.py
 msgid "Daily Activities"
 msgstr "デイリー・イベント"
+
+# Independent client
+
+msgid "Client Settings"
+msgstr "クライアント設定"
+
+msgid "Switch all keyboard and mouse input"
+msgstr "キーボード・マウス入力を一括切替"
+
+msgid "System keyboard and mouse"
+msgstr "システムのキーボード・マウス入力"
+
+msgid "Background window messages"
+msgstr "バックグラウンドのウィンドウメッセージ"
+
+msgid "Current input mode: {mode}"
+msgstr "現在の入力方式：{mode}"
+
+msgid "System input uses the real keyboard and cursor. Keep the game focused. Changes apply between tasks."
+msgstr "システム入力は実際のキーボードとカーソルを使います。ゲームを前面に保ってください。切替はタスク間で行います。"
+
+msgid "Check independent channel"
+msgstr "独立チャンネルの更新を確認"
+
+msgid "Download portable update"
+msgstr "ポータブル更新をダウンロード"
+
+msgid "Open update folder"
+msgstr "更新フォルダーを開く"
+
+msgid "Import old configuration"
+msgstr "以前の設定をインポート"
+
+msgid "Choose old configuration folder"
+msgstr "以前の設定フォルダーを選択"
+
+msgid "Import old configuration once. The current configuration is backed up and replaced on the next start."
+msgstr "以前の設定を一度だけ取り込めます。次回起動時に現在の設定をバックアップして置き換えます。"
+
+msgid "The current configuration will be backed up and replaced after restart. Continue?"
+msgstr "再起動後に現在の設定をバックアップして置き換えます。続行しますか？"
+
+msgid "Staged {count} files. Restart to finish importing."
+msgstr "{count} 個のファイルを準備しました。再起動して完了してください。"
+
+msgid "Stop the current task before importing configuration."
+msgstr "設定を取り込む前に現在のタスクを停止してください。"
+
+msgid "Stop the current task before switching input mode."
+msgstr "入力方式を切り替える前に現在のタスクを停止してください。"
+
+msgid "No newer independent release available."
+msgstr "新しい独立リリースはありません。"
+
+msgid "Available version: {version}"
+msgstr "利用可能なバージョン：{version}"
+
+msgid "Update check failed: {error}"
+msgstr "更新確認に失敗：{error}"
+
+msgid "Update saved to {path}. Close the app and extract it over this portable folder; keep the data folder."
+msgstr "更新を {path} に保存しました。終了後に展開して置き換え、data フォルダーは保持してください。"
+
+msgid "Loading workshop cache..."
+msgstr "工房キャッシュを読み込み中…"
+
+msgid "Refresh workshop cache"
+msgstr "工房キャッシュを更新"
+
+msgid "Refreshing workshop index and code cache..."
+msgstr "工房の索引とコードキャッシュを更新中…"
+
+msgid "Offline cache from {time}"
+msgstr "オフラインキャッシュ：{time}"
+
+msgid "Workshop updated at {time}"
+msgstr "工房更新日時：{time}"
+
+msgid "{count} archives could not be cached."
+msgstr "{count} 個のパッケージをキャッシュできませんでした。"
+
+msgid "Workshop unavailable; showing saved data."
+msgstr "工房に接続できないため保存済みデータを表示します。"
+
+msgid "Focus the game before enabling system input."
+msgstr "システム入力を有効にする前にゲームを前面にしてください。"
+
+msgid "Connect the Windows target before switching input mode."
+msgstr "入力方式を切り替える前に対象ウィンドウに接続してください。"
+
+msgid "Release all inputs before switching input mode."
+msgstr "入力をすべて離してから切り替えてください。"
+
+msgid "Prevent the target window from moving the mouse"
+msgstr "対象ウィンドウによるマウス移動を防止"

@@ -34,12 +34,11 @@ base_dir = "src"
 extensions = find_pyx_packages(base_dir)
 
 setuptools.setup(
-    name="ok-ww",
-    version="0.0.1",
-    author="ok-oldking",
-    author_email="firedcto@gmail.com",
+    name="asterdesk",
+    version="1.0.0",
+    author="AsterDesk Contributors",
     description="Automation with Computer Vision for Python",
-    url="https://github.com/ok-oldking/ok-script",
+    url="https://github.com/jawwe/ok-wuthering-waves/tree/codex/independent-client",
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[

@@ -2,6 +2,7 @@ import difflib
 import json
 import re
 import tempfile
+import threading
 from datetime import datetime
 from pathlib import Path
 from urllib.error import HTTPError
@@ -38,13 +39,15 @@ from src.char.CustomCharLoader import (
     normalize_team, read_builtin_char_code, read_team_char_code, read_team_manifest,
     save_team_code_as_import, switch_all_teams_code_mode, switch_team_code_mode, team_code_state,
 )
+from src.app_identity import CHANNEL_BRANCH, REPOSITORY
+from src.workshop import WorkshopStore, Catalog, SITE, USER_AGENT, ARCHIVE_HOSTS
 
-BASE_CHAR_URL = "https://raw.githubusercontent.com/ok-oldking/ok-wuthering-waves/refs/heads/master/src/char/BaseChar.py"
+BASE_CHAR_URL = f"https://raw.githubusercontent.com/{REPOSITORY}/{CHANNEL_BRANCH}/src/char/BaseChar.py"
 UPLOAD_TEAM_URL = "https://github.com/ok-oldking/ok-ww-char-code"
-WORKSHOP_TEAMS_ALL_URL = "https://cfokwwchar.ok-script.com/teams.json"
-WORKSHOP_TEAM_URL = "https://cfokwwchar.ok-script.com/teams/{slug}.json"
-WORKSHOP_ARCHIVE_HOSTS = {"cfokwwchar.ok-script.com", "raw.githubusercontent.com"}
-WORKSHOP_USER_AGENT = "ok-wuthering-waves"
+WORKSHOP_TEAMS_ALL_URL = f"{SITE}/teams.json"
+WORKSHOP_TEAM_URL = SITE + "/teams/{slug}.json"
+WORKSHOP_ARCHIVE_HOSTS = ARCHIVE_HOSTS
+WORKSHOP_USER_AGENT = USER_AGENT
 logger = Logger.get_logger(__name__)
 
 # The team list marks each team with a haloed dot, and both switch buttons wear the
@@ -464,68 +467,13 @@ def workshop_team_url(team):
 
 
 def fetch_all_workshop_teams():
-    url = WORKSHOP_TEAMS_ALL_URL
-    logger.info(f"char code workshop all teams request: {url}")
-    try:
-        with urlopen(Request(url, headers={"User-Agent": WORKSHOP_USER_AGENT}), timeout=15) as response:
-            content = response.read(5_000_001)
-    except HTTPError as error:
-        if error.code == 404:
-            return []
-        raise
-    if len(content) > 5_000_000:
-        raise ValueError(translate_ui("Workshop response is too large."))
-    try:
-        payload = json.loads(content.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as error:
-        raise ValueError(translate_ui("Workshop returned invalid JSON.")) from error
-    if not isinstance(payload, dict) or not isinstance(payload.get("teams"), list):
-        raise ValueError(translate_ui("Workshop response is invalid."))
-
-    all_codes = []
-    for team_entry in payload["teams"]:
-        if not isinstance(team_entry, dict):
-            continue
-        team_str = team_entry.get("team", "")
-        members = team_entry.get("members", [])
-        codes = team_entry.get("codes", [])
-        for code in codes:
-            if not isinstance(code, dict):
-                continue
-            item = dict(code)
-            if "team" not in item or not item["team"]:
-                item["team"] = team_str
-            if "members" not in item or not item["members"]:
-                item["members"] = members
-            all_codes.append(item)
-
-    return sorted(all_codes, key=lambda code: int(code.get("timestamp") or 0), reverse=True)
+    return WorkshopStore(opener=urlopen).refresh().codes
 
 
 def fetch_workshop_codes(team):
     expected_members = sorted((get_english_char_name(name) for name in normalize_team(team)), key=str.casefold)
-    url = workshop_team_url(team)
-    logger.info(f"char code workshop request: {url}")
-    try:
-        with urlopen(Request(url, headers={"User-Agent": WORKSHOP_USER_AGENT}), timeout=15) as response:
-            content = response.read(2_000_001)
-    except HTTPError as error:
-        if error.code == 404:
-            return []
-        raise
-    if len(content) > 2_000_000:
-        raise ValueError(translate_ui("Workshop response is too large."))
-    try:
-        payload = json.loads(content.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as error:
-        raise ValueError(translate_ui("Workshop returned invalid JSON.")) from error
-    if not isinstance(payload, dict) or not isinstance(payload.get("codes"), list):
-        raise ValueError(translate_ui("Workshop response is invalid."))
-    members = payload.get("members")
-    if members is not None and sorted(members, key=str.casefold) != expected_members:
-        raise ValueError(translate_ui("Workshop returned a different team."))
-    codes = [code for code in payload["codes"] if isinstance(code, dict)]
-    return sorted(codes, key=lambda code: int(code.get("timestamp") or 0), reverse=True)
+    return [code for code in fetch_all_workshop_teams()
+            if sorted(code.get("members", []), key=str.casefold) == expected_members]
 
 
 def format_workshop_local_time(code, date_only=False):
@@ -660,6 +608,7 @@ class TeamInfoDialog(TranslatedDialog):
 
 class WorkshopDialog(TranslatedDialog):
     import_requested = Signal(object)
+    cache_finished = Signal(object)
 
     def __init__(self, codes, team_name=None, parent=None):
         super().__init__(parent)
@@ -672,6 +621,16 @@ class WorkshopDialog(TranslatedDialog):
         else:
             title = self.tr("Team Workshop")
         self.set_dialog_title(title)
+
+        self.store = WorkshopStore()
+        self.refreshing = False
+        self.cache_status = QLabel(self.tr("Loading workshop cache..."), self.panel)
+        self.cache_status.setWordWrap(True)
+        self.refresh_button = Button(self.tr("Refresh workshop cache"), parent=self.panel)
+        self.refresh_button.clicked.connect(self.start_refresh)
+        self.body.addWidget(self.cache_status)
+        self.body.addWidget(self.refresh_button)
+        self.cache_finished.connect(self._cache_finished)
 
         filter_layout = QHBoxLayout()
         self.search_edit = QLineEdit(self.panel)
@@ -745,6 +704,57 @@ class WorkshopDialog(TranslatedDialog):
         self.set_cancel_visible(False)
         self._apply_filter()
 
+    def set_catalog(self, catalog, errors=()):
+        self.all_codes = catalog.codes
+        selected = self.char_filter_combo.currentData()
+        self.char_filter_combo.blockSignals(True)
+        self.char_filter_combo.clear()
+        self.char_filter_combo.addItem(self.tr("All Characters"), userData="")
+        members = {member for code in self.all_codes for member in code.get("members", [])}
+        for member in sorted(members, key=lambda name: self.tr(get_english_char_name(name)).casefold()):
+            self.char_filter_combo.addItem(self.tr(get_english_char_name(member)), userData=member)
+        index = self.char_filter_combo.findData(selected)
+        self.char_filter_combo.setCurrentIndex(max(0, index))
+        self.char_filter_combo.blockSignals(False)
+        stamp = datetime.fromisoformat(catalog.fetched_at).astimezone().strftime("%Y-%m-%d %H:%M")
+        message = "Offline cache from {time}" if catalog.offline else "Workshop updated at {time}"
+        text = self.tr(message).format(time=stamp)
+        if errors:
+            text += " — " + self.tr("{count} archives could not be cached.").format(count=len(errors))
+        self.cache_status.setText(text)
+        self.cache_status.setToolTip(catalog.error or "\n".join(errors))
+        self._apply_filter()
+
+    def start_refresh(self):
+        if self.refreshing:
+            return
+        self.refreshing = True
+        self.refresh_button.setEnabled(False)
+        self.cache_status.setText(self.tr("Refreshing workshop index and code cache..."))
+
+        def refresh():
+            try:
+                catalog = self.store.refresh()
+                errors = self.store.prefetch(catalog)
+                result = (catalog, errors, None)
+            except Exception as error:
+                result = (None, (), str(error))
+            try:
+                self.cache_finished.emit(result)
+            except RuntimeError:
+                pass
+        threading.Thread(target=refresh, name="CatalogRefresh", daemon=True).start()
+
+    def _cache_finished(self, result):
+        self.refreshing = False
+        self.refresh_button.setEnabled(True)
+        catalog, errors, error = result
+        if error:
+            self.cache_status.setText(self.tr("Workshop unavailable; showing saved data."))
+            self.cache_status.setToolTip(error)
+        else:
+            self.set_catalog(catalog, errors)
+
     def _team_display_text(self, code):
         members = code.get("members")
         if members and isinstance(members, list):
@@ -788,6 +798,13 @@ class WorkshopDialog(TranslatedDialog):
         codes = self.filtered_codes
         count_text = self.tr("{count} configurations").format(count=len(codes))
         self.count_label.setText(count_text)
+
+        # Hide old cell widgets before Qt defers their destruction on a refresh.
+        for row in range(self.table.rowCount()):
+            widget = self.table.cellWidget(row, 5)
+            if widget is not None:
+                widget.hide()
+        self.table.setRowCount(0)
 
         if not codes:
             self.table.setRowCount(0)
@@ -858,6 +875,7 @@ class WorkshopDialog(TranslatedDialog):
 
 class CharacterCodeTab(CustomTab):
     current_team_loaded = Signal(object)
+    workshop_archive_loaded = Signal(object)
 
     def __init__(self):
         super().__init__()
@@ -877,6 +895,7 @@ class CharacterCodeTab(CustomTab):
         self.char_feature_images = {}
         self.char_source_pixmaps = {}
         self.show_char_feature_image = False
+        self.workshop_archive_loaded.connect(self._finish_workshop_import)
 
         splitter = QSplitter(Qt.Horizontal, self.view)
         splitter.setChildrenCollapsible(False)
@@ -1548,30 +1567,40 @@ class CharacterCodeTab(CustomTab):
         # An import selects the imported team, so ask before anything is downloaded.
         if not self._guard_unsaved_changes():
             return
-        try:
-            codes = fetch_all_workshop_teams()
-        except Exception as e:
-            show_info_bar(self.window(), str(e), title=self.tr("Workshop Error"), error=True)
-            return
-        dialog = WorkshopDialog(codes, parent=self.window())
+        store = WorkshopStore()
+        catalog = store.cached_catalog()
+        dialog = WorkshopDialog(catalog.codes if catalog else [], parent=self.window())
+        dialog.store = store
+        if catalog:
+            dialog.set_catalog(catalog)
         dialog.import_requested.connect(lambda code: self._import_workshop_code(code, dialog))
+        dialog.start_refresh()
         dialog.exec()
 
     def _import_workshop_code(self, code, parent):
-        url = code.get("downloadUrl") or code.get("rawUrl")
-        parsed = urlparse(str(url or ""))
-        # Published workshop indexes can still contain the previous server's URLs.
-        if parsed.hostname == "okwwcharcode.ok-script.com":
-            parsed = parsed._replace(netloc=urlparse(WORKSHOP_TEAMS_ALL_URL).netloc)
-            url = parsed.geturl()
-        if parsed.scheme != "https" or parsed.hostname not in WORKSHOP_ARCHIVE_HOSTS:
-            show_info_bar(parent, self.tr("Workshop download URL is invalid."), title=self.tr("Error"), error=True)
+        parent.setEnabled(False)
+
+        def download():
+            try:
+                content, error = WorkshopStore().archive(code), None
+            except Exception as exception:
+                content, error = None, str(exception)
+            try:
+                self.workshop_archive_loaded.emit((code, parent, content, error))
+            except RuntimeError:
+                pass
+        threading.Thread(target=download, name="CatalogDownload", daemon=True).start()
+
+    def _finish_workshop_import(self, result):
+        code, parent, content, error = result
+        try:
+            parent.setEnabled(True)
+        except RuntimeError:
+            return
+        if error:
+            show_info_bar(parent, error, title=self.tr("Workshop Error"), error=True)
             return
         try:
-            with urlopen(Request(url, headers={"User-Agent": WORKSHOP_USER_AGENT}), timeout=30) as response:
-                content = response.read(20_000_001)
-            if len(content) > 20_000_000:
-                raise ValueError(self.tr("Workshop archive is too large."))
             with tempfile.TemporaryDirectory() as temp_dir:
                 archive_path = Path(temp_dir) / Path(str(code.get("filename") or "team.zip")).name
                 archive_path.write_bytes(content)

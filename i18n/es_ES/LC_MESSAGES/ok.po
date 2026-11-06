@@ -2135,3 +2135,98 @@ msgstr "Multicuenta"
 #: src/task/TacetTask.py
 msgid "Daily Activities"
 msgstr "Actividades diarias"
+
+# Independent client
+
+msgid "Client Settings"
+msgstr "Ajustes del cliente"
+
+msgid "Switch all keyboard and mouse input"
+msgstr "Cambiar toda la entrada de teclado y ratón"
+
+msgid "System keyboard and mouse"
+msgstr "Teclado y ratón del sistema"
+
+msgid "Background window messages"
+msgstr "Mensajes de ventana en segundo plano"
+
+msgid "Current input mode: {mode}"
+msgstr "Modo de entrada actual: {mode}"
+
+msgid "System input uses the real keyboard and cursor. Keep the game focused. Changes apply between tasks."
+msgstr "La entrada del sistema usa el teclado y cursor reales. Mantén el juego enfocado. Los cambios se aplican entre tareas."
+
+msgid "Check independent channel"
+msgstr "Comprobar el canal independiente"
+
+msgid "Download portable update"
+msgstr "Descargar actualización portable"
+
+msgid "Open update folder"
+msgstr "Abrir carpeta de actualizaciones"
+
+msgid "Import old configuration"
+msgstr "Importar configuración anterior"
+
+msgid "Choose old configuration folder"
+msgstr "Elegir carpeta de configuración anterior"
+
+msgid "Import old configuration once. The current configuration is backed up and replaced on the next start."
+msgstr "Importa la configuración anterior una vez. La actual se guardará y sustituirá al reiniciar."
+
+msgid "The current configuration will be backed up and replaced after restart. Continue?"
+msgstr "La configuración actual se guardará y sustituirá al reiniciar. ¿Continuar?"
+
+msgid "Staged {count} files. Restart to finish importing."
+msgstr "Se prepararon {count} archivos. Reinicia para completar la importación."
+
+msgid "Stop the current task before importing configuration."
+msgstr "Detén la tarea actual antes de importar la configuración."
+
+msgid "Stop the current task before switching input mode."
+msgstr "Detén la tarea actual antes de cambiar el modo de entrada."
+
+msgid "No newer independent release available."
+msgstr "No hay una versión independiente más reciente."
+
+msgid "Available version: {version}"
+msgstr "Versión disponible: {version}"
+
+msgid "Update check failed: {error}"
+msgstr "Error al comprobar actualizaciones: {error}"
+
+msgid "Update saved to {path}. Close the app and extract it over this portable folder; keep the data folder."
+msgstr "Actualización guardada en {path}. Cierra la app y extrae sobre la carpeta portable; conserva data."
+
+msgid "Loading workshop cache..."
+msgstr "Cargando caché del taller…"
+
+msgid "Refresh workshop cache"
+msgstr "Actualizar caché del taller"
+
+msgid "Refreshing workshop index and code cache..."
+msgstr "Actualizando índice y caché de códigos del taller…"
+
+msgid "Offline cache from {time}"
+msgstr "Caché sin conexión de {time}"
+
+msgid "Workshop updated at {time}"
+msgstr "Taller actualizado el {time}"
+
+msgid "{count} archives could not be cached."
+msgstr "No se pudieron guardar {count} paquetes en caché."
+
+msgid "Workshop unavailable; showing saved data."
+msgstr "Taller no disponible; se muestran los datos guardados."
+
+msgid "Focus the game before enabling system input."
+msgstr "Enfoca el juego antes de activar la entrada del sistema."
+
+msgid "Connect the Windows target before switching input mode."
+msgstr "Conecta la ventana de destino antes de cambiar el modo."
+
+msgid "Release all inputs before switching input mode."
+msgstr "Suelta todas las teclas y botones antes de cambiar el modo."
+
+msgid "Prevent the target window from moving the mouse"
+msgstr "Evitar que la ventana de destino mueva el ratón"
