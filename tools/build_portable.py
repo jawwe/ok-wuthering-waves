@@ -109,7 +109,7 @@ def build(version, refresh=True):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="1.0.0")
+    parser.add_argument("--version", default="1.0.1")
     parser.add_argument("--offline-snapshot", action="store_true")
     arguments = parser.parse_args()
     build(arguments.version, refresh=not arguments.offline_snapshot)

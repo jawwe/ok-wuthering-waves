@@ -58,7 +58,7 @@ continue to use system input when needed.
 ## Build and updates
 
 ```powershell
-.\.venv\Scripts\python.exe tools/build_portable.py --version 1.0.0
+.\.venv\Scripts\python.exe tools/build_portable.py --version 1.0.1
 ```
 
 Use Windows x64 Python 3.12 and the pinned `requirements.txt`. The builder refreshes

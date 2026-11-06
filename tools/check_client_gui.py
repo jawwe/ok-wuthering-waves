@@ -50,6 +50,12 @@ def inspect_gui():
         assert window.about_tab.update_card is None
         output = ROOT / "data/qa"
         output.mkdir(parents=True, exist_ok=True)
+        window.run_bar.connection_pill.click()
+        settle()
+        assert window.run_bar.popover.isVisible()
+        assert window.run_bar.popover._interaction_names == ["SwitchableInteraction"]
+        window.grab().save(str(output / "connection-popover.png"))
+        window.run_bar.popover.close_popover()
         for page in pages:
             window.switch_to(page)
             settle()
@@ -62,12 +68,14 @@ def inspect_gui():
         assert dialog.table.rowCount() == len(catalog.codes)
         dialog.grab().save(str(output / "workshop.png"))
         dialog.close()
-        report = {"title": window.windowTitle(), "pages": [type(page).__name__ for page in pages],
-                  "catalog_rows": len(catalog.codes), "legacy_updater": False, "sent_game_input": False}
+        report = {"success": True, "title": window.windowTitle(), "pages": [type(page).__name__ for page in pages],
+                  "catalog_rows": len(catalog.codes), "legacy_updater": False, "sent_game_input": False,
+                  "connection_popover_opened": True}
         (output / "gui-check.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
         print(json.dumps(report))
     except Exception as error:
         failure = repr(error)
+        (ROOT / "data/qa/gui-check.json").write_text(json.dumps({"success": False, "error": failure}), encoding="utf-8")
         print(f"GUI check failed: {failure}")
     finally:
         runtime.quit()

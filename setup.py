@@ -35,7 +35,7 @@ extensions = find_pyx_packages(base_dir)
 
 setuptools.setup(
     name="asterdesk",
-    version="1.0.0",
+    version="1.0.1",
     author="AsterDesk Contributors",
     description="Automation with Computer Vision for Python",
     url="https://github.com/jawwe/ok-wuthering-waves/tree/codex/independent-client",

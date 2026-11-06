@@ -4,6 +4,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 code_root = Path(__file__).resolve().parent
 if not (code_root / "src").is_dir():
@@ -24,11 +25,15 @@ def main():
     from src.gui.ClientSettingsTab import ClientSettingsTab
     from src.char.CustomCharLoader import inspect_team_archive
     from src.input_mode import SwitchableInteraction
+    from ok.ui.qt.shell.connection import interaction_options
     Config.config_folder = config["config_folder"]
     application = QApplication.instance() or QApplication([])
     tabs = [CharacterCodeTab(), ClientSettingsTab()]
     assert config["gui_title"] == APP_NAME
-    assert config["windows"]["interaction"] is SwitchableInteraction
+    assert config["windows"]["interaction"] == [SwitchableInteraction]
+    manager = SimpleNamespace(windows_capture_config=config["windows"], config={})
+    options, index, names = interaction_options(manager, {"device": "windows"})
+    assert len(options) == 1 and index == 0 and names == [SwitchableInteraction.__name__]
     assert "update_pyappify" not in config
     assert "ok-oldking" not in json.dumps(config["links"])
     def offline(*args, **kwargs):
@@ -49,7 +54,8 @@ def main():
             temporary.unlink(missing_ok=True)
     report = {"application": APP_NAME, "root": str(APP_ROOT), "executable": sys.executable,
               "pid": os.getpid(), "offline_catalog": len(catalog.codes), "verified_archives": verified,
-              "pages": [tab.name for tab in tabs], "snapshot_time": catalog.fetched_at}
+              "pages": [tab.name for tab in tabs], "snapshot_time": catalog.fetched_at,
+              "connection_input_options": names}
     DATA_ROOT.mkdir(parents=True, exist_ok=True)
     (DATA_ROOT / "self-check.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     for tab in tabs:
